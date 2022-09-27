@@ -1,0 +1,70 @@
+version: '3.8'
+services:
+    zipkin:
+        image: openzipkin/zipkin-slim
+        ports:
+            - "9411:9411"
+        networks:
+            - otel-network
+    jaeger:
+        image: jaegertracing/all-in-one
+        environment:
+            COLLECTOR_ZIPKIN_HOST_PORT: 9412
+        ports:
+            - "9412:9412"
+            - "16686:16686"
+        networks:
+            - otel-network
+    app:
+        build:
+            context: ..
+            dockerfile: docker/php/Dockerfile
+            args:
+                - UID=${UID}
+                - USER_NAME=${USER_NAME}
+        restart: unless-stopped
+        tty: true
+        working_dir: /var/www
+        volumes:
+            - ../:/var/www:delegated
+            - ../data/log/profiles:/tmp/profiles:delegated
+            - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini:delegated
+            - ./php/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:delegated
+        networks:
+            - otel-network
+    webserver:
+        image: nginx:alpine
+        restart: unless-stopped
+        tty: true
+        ports:
+            - 8083:80
+        volumes:
+            - ../:/var/www:delegated
+            - ../docker/nginx/conf.d/:/etc/nginx/conf.d/:delegated
+        networks:
+            - otel-network
+    db:
+        image: mariadb:10.4.10
+        restart: unless-stopped
+        tty: true
+        ports:
+            - 3308:3306
+        environment:
+            MYSQL_DATABASE: boilerplate
+            MYSQL_ROOT_PASSWORD: 12345
+        volumes:
+            - dbdata:/var/lib/mysql/
+            - ../docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - ../docker/mysql/my.cnf:/etc/mysql/my.cnf:delegated
+        networks:
+            - otel-network
+    composer:
+        image: composer:2.2
+        volumes:
+            - ../:/app
+networks:
+    otel-network:
+        driver: bridge
+volumes:
+    dbdata:
+        driver: local

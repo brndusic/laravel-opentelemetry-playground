@@ -65,7 +65,7 @@ $tracer = (new TracerProvider(
         new SimpleSpanProcessor(
             new OpenTelemetry\Contrib\Jaeger\Exporter(
                 'Hello World Web Server Jaeger',
-                'http://localhost:9412/api/v2/spans',
+                'http://jaeger:9412/api/v2/spans',
                 $httpClient,
                 $httpFactory,
                 $httpFactory,
@@ -75,7 +75,7 @@ $tracer = (new TracerProvider(
         new SimpleSpanProcessor(
             new OpenTelemetry\Contrib\Zipkin\Exporter(
                 'Hello World Web Server Zipkin',
-                'http://localhost:9411/api/v2/spans',
+                'http://zipkin:9411/api/v2/spans',
                 $httpClient,
                 $httpFactory,
                 $httpFactory,
