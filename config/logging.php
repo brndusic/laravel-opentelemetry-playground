@@ -18,6 +18,7 @@ return [
     */
 
     'default' => env('LOG_CHANNEL', 'stack'),
+    'googleProjectId' => env('GOOGLE_PROJECT'),
 
     /*
     |--------------------------------------------------------------------------
@@ -53,7 +54,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single', 'googlecloud'],
             'ignore_exceptions' => false,
         ],
 
@@ -116,6 +117,12 @@ return [
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+
+        'googlecloud' => [
+            'driver' => 'custom',
+            'via' => \App\Log\CreateGoogleCloudLogger::class,
+            'level' => env('LOG_LEVEL', 'debug'),
         ],
     ],
 

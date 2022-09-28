@@ -6,6 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "google/cloud-logging": "^1.24",
+        "google/cloud-trace": "^1.4",
         "guzzlehttp/psr7": "2.1",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",

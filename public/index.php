@@ -82,6 +82,12 @@ $tracer = (new TracerProvider(
             ),
 //            new \OpenTelemetry\SDK\Common\Time\SystemClock()
         ),
+        new SimpleSpanProcessor(
+            new App\OpenTelemetry\Contrib\Google\Exporter(
+                '/var/www/storage/credentials.json',
+            ),
+//            new \OpenTelemetry\SDK\Common\Time\SystemClock()
+        ),
     ],
     new AlwaysOnSampler(),
 ))->getTracer('Hello World Laravel Web Server');
