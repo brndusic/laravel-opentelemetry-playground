@@ -12,7 +12,9 @@ class HelloController extends Controller
         $childSpan  = $tracer->spanBuilder('Child span 1')->startSpan();
         $childScope = $childSpan->activate();
         Log::shareContext([
-            'traceId' => $childSpan->getContext()->getTraceId()
+            'stackdriverOptions' => [
+                'trace' => sprintf('projects/%s/traces/%s', config('logging.googleProjectId'), $childSpan->getContext()->getTraceId()),
+            ]
         ]);
         try {
             Log::debug('Before exception', ['spanId' => $childSpan->getContext()->getSpanId()]);
