@@ -84,7 +84,7 @@ $tracer = (new TracerProvider(
         ),
         new SimpleSpanProcessor(
             new App\OpenTelemetry\Contrib\Google\Exporter(
-                '/var/www/storage/credentials.json',
+                '/var/www/storage/sinpex-tracing-38b3b-0fcc245789ea.json',
             ),
 //            new \OpenTelemetry\SDK\Common\Time\SystemClock()
         ),

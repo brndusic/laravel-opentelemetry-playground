@@ -9,6 +9,7 @@
         "google/cloud-logging": "^1.24",
         "google/cloud-trace": "^1.4",
         "guzzlehttp/psr7": "2.1",
+        "hedii/laravel-gelf-logger": "^7.1",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
